@@ -2,6 +2,7 @@ package com.example.android.testing.espresso.BasicSample
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -24,14 +25,21 @@ class InstrumentedTest {
 
     @Test
     fun changeTest_validString() {
+
+
         onView(withId(R.id.editTextUserInput))
-            .perform(typeText(TEST_STRING))
+            .perform(typeText(TEST_STRING), closeSoftKeyboard())
+
+        onView(withId(R.id.changeTextBt))
+            .perform(click())
+
+        onView(withId(R.id.textToBeChanged))
             .check(matches(withText(containsString(TEST_STRING))))
     }
     @After
     fun tearDown() {
         try {
-            Thread.sleep(6000)
+            Thread.sleep(4000)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
@@ -61,14 +69,22 @@ class InstrumentedTest {
     @Test
     fun changeText_validText() {
         onView(withId(R.id.editTextUserInput))
-            .perform(typeText(TEST_TEXT))
+            .perform(typeText(TEST_TEXT), closeSoftKeyboard())
+
+        onView(withId(R.id.changeTextBt))
+            .perform(click())
+
+        onView(withId(R.id.textToBeChanged))
             .check(matches(withText(containsString(TEST_TEXT))))
+
+
+
     }
     @Test
     fun changeTextAndActivityOpen_validText() {
         onView(withId(R.id.editTextUserInput)).perform(typeText(TEST_TEXT))
-        onView(withId(R.id.changeTextBt)).perform(click())
-        onView(withId(R.id.textToBeChanged)).check(matches(withText(containsString(TEST_TEXT))))
+        onView(withId(R.id.activityChangeTextBtn)).perform(click())
+        onView(withId(R.id.show_text_view)).check(matches(withText(containsString(TEST_TEXT))))
     }
 
     companion object {
